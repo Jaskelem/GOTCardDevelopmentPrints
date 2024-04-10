@@ -1,0 +1,378 @@
+
+
+; Set the size of the cards
+CARDSIZE=6.3,8.8
+
+; Define the path to the Excel file containing card data
+LINK="..\Card Setting Default\GotCustomDLC.xlsx"
+[all]="1-{(Name)}"
+
+[box_border]=#000000
+[NameWideLine]=[NameWideLineColour]
+[NameSmallSideLines]=[NameSmallSideLinesColour]
+[NameBackground]=[NameBackgroundColour]
+[TextBackground]=[TextBackgroundColour]
+[BottomLine]=[BottomLineColour]
+
+
+;Define config
+HTMLFONT=Illustrator_font,Arial,3,,#FFFFFF,LEFT
+[disclaimer] = JOIN( "<Illustrator_font>", "Fantasy Cards.Not For Resale.© George R.R.Martin © FFG","</Illustrator_font>")
+[IllustratorText] = JOIN( "<Illustrator_font>Illus.", [Illustrator],"</Illustrator_font>")
+[IdText]=JOIN( "<Illustrator_font>", [Id],"</Illustrator_font>")
+
+HTMLFONT=Description_font,Arial,7,,#000000,LEFT
+[DescriptionText] = JOIN( "<Description_font>", [Description],"</Description_font>")
+
+HTMLFONT=Traits_font,"Lucida Fax",7,IB,#000000,CENTER
+[TraitsText] = JOIN( "<Traits_font>", [Traits],"</Traits_font>")
+
+HTMLFONT=Name_font,"Copperplate Gothic Light",9,B,#000000,CENTER
+[NameText] = JOIN( "<Name_font>", [Name],"</Name_font>")
+
+HTMLFONT=Abilities_font,Arial,7,,#000000,LEFT
+[AbilitiesText] = JOIN( "<Abilities_font>", [Abilities],"</Abilities_font>")
+
+[imgFile] = JOIN( "../Got_",[Faction],"_Expansion/",[Type],"/", [CardImage])
+[sideImgFile] = JOIN( "../Side_Art/",[Faction],".jpg")
+[Logo] = JOIN("../Faction_Logo/",[Faction],"Heraldry.png")
+[LoyalLogo] = JOIN("../Got_Default_Icons/",[Loyal],".png")
+[BackgroundFile] = JOIN( "../Faction_Logo/", [Faction],"Background.png")
+[StripH] = JOIN( "../Side_Art/",[Faction],"StripH.jpg")
+[StripV] = JOIN( "../Side_Art/",[Faction],"StripV.jpg")
+
+
+
+
+
+; Draw the main rectangle for the card
+RECTANGLE=[all],0.1%,0.1%,100%,100%,[box_border],empty,0.01
+
+
+
+
+
+;Draw side decor
+if=[Type]<>"Event"
+IMAGE=[all],[sideImgFile],0%,0%,100%,100%,0
+endif
+
+
+
+
+
+; Draw the card image
+if=[Type]="Character"
+IMAGE=[all],[imgFile],13.75%,0%,86.5%,62%,0
+endif
+if=[Type]="Location"
+BRUSH=[all],CUSTOM,[imgFile],100%,100%
+ROUNDRECT=[all],21.3%,0%,100%,70%,#AAAAAA,#AAAAAA,0,0.8,3.5,RF
+BRUSH=[all],SOLID
+endif
+if=[Type]="Event"
+IMAGE=[all],[imgFile],0%,0%,100%,83%,0
+endif
+
+
+;Draw side special case decor
+if=[Type]="Event"
+BRUSH=[all],CUSTOM,[sideImgFile],100%,100%
+TRIANGLE=,0%,0%,0%,25%,100%,0%,#000000
+TRIANGLE=,100%,83.5%,0%,83.5%,100%,55.5%,#000000
+RECTANGLE=[all],0%,83.5%,100%,100%,#000000
+BRUSH=[all],SOLID
+endif
+
+; Draw a rectangle for the card name
+if=[Type]="Character"
+RECTANGLE=[all],6%,62%,94%,0.5%,[NameWideLine]
+RECTANGLE=[all],6%,62%,94%,0.5%,[NameSmallSideLines],Empty,0.005
+
+RECTANGLE=[all],0.3%,67%,100%,0.5%,[NameWideLine]
+RECTANGLE=[all],0.3%,67%,100%,0.5%,[NameSmallSideLines],Empty,0.005
+
+RECTANGLE=[all],8%,62.6%,100%,4.3%,[NameBackground]
+endif
+if=[Type]="Location"
+BEZIER=[all],30.8%,0%,1,2,1.2,4.5,30.01%,69%,[NameSmallSideLines],0.1
+BEZIER=[all],30.8%,0%,1,2.1,1.2,4.5,30.01%,69%,[NameWideLine],0.05
+endif
+if=[Type]="Event"
+;image around
+LINERECT=[all],0%,0%,100%,25%,[NameSmallSideLines],0.1,,0,0,G
+LINERECT=[all],0%,0%,100%,25%,[NameWideLine],0.06,,0,0,G
+
+LINERECT=[all],0%,55%,100%,28%,[NameSmallSideLines],0.1,,0,0,G
+LINERECT=[all],0%,55%,100%,28%,[NameWideLine],0.06,,0,0,G
+
+;name
+RECTANGLE=[all],8%,4.5%,80%,0.5%,[NameWideLine]
+RECTANGLE=[all],8%,4.5%,80%,0.5%,[NameSmallSideLines],Empty,0.005
+
+RECTANGLE=[all],8%,9.5%,80%,0.5%,[NameWideLine]
+RECTANGLE=[all],8%,9.5%,80%,0.5%,[NameSmallSideLines],Empty,0.005
+
+RECTANGLE=[all],8%,5.1%,80%,4.3%,[NameBackground]
+
+
+;around text
+RECTANGLE=[all],11%,64.5%,78%,1%,[NameWideLine]
+RECTANGLE=[all],10%,64.5%,80%,1%,[NameSmallSideLines],Empty,0.03
+
+RECTANGLE=[all],11%,97.25%,78%,1%,[NameWideLine]
+RECTANGLE=[all],10%,97.25%,80%,1%,[NameSmallSideLines],Empty,0.03
+endif
+if=[Type]="Attachment"
+BRUSH=[all],CUSTOM,../Got_Default_Icons/MetalTexture.jpg,100%,100%
+ROUNDRECT=[all],-20%,25%,140%,40%,#AAAAAA,#AAAAAA,0.05,200,3.5,RF
+BRUSH=[all],SOLID
+
+endif
+
+
+;Icon line
+if=[Type]="Character"
+BRUSH=[all],CUSTOM,[StripV],8.2%,100%
+RECTANGLE=[all],10.3%,0%,3.36%,60%,#000000
+endif
+if=[Type]="Event"
+BRUSH=[all],CUSTOM,[StripV],7.1%,100%
+RECTANGLE=[all],7.6%,64.3%,3.26%,40%,#000000
+RECTANGLE=[all],89%,64.3%,3.26%,40%,#000000
+endif
+if=[Type]="Attachment"
+BRUSH=[all],CUSTOM,[StripV],7.1%,100%
+RECTANGLE=[all],7.6%,50%,3.26%,60%,#000000
+RECTANGLE=[all],89%,50%,3.26%,60%,#000000
+endif
+
+
+BRUSH=[all],SOLID
+
+
+
+
+
+; Make Coin Icon
+IMAGE=[all],../Got_Default_Icons/CoinIcon.png,3%,0%,18%,13%,0,N
+if=([Shadow]<>"")
+IMAGE=[all],../Got_Default_Icons/ShadowCoinIcon.png,2%,-2%,30%,13%,0,N
+endif
+; Set font and add text for the cost
+FONT=@Adobe Kaiti Std R,22,T,#FFFFFF
+TEXT=[all],[Cost],1.7%,1.7%,20%,15%,CENTER,WWTOP
+
+
+if=[Type]="Location"
+COLOR=[all],[NameBackground],&6600A0
+IMAGE=[all],../Got_Default_Icons/LocationNameStrip.png,4%,12%,15%,50%,0,TC
+
+endif
+Color=[all],#808080,&808080
+
+
+;Text background
+if=[Type]="Character"
+Color=[all],[TextBackground]
+IMAGE=[all],../Got_Default_Icons/TextPaperImage.png,0.3%,67.6%,100%,60%,0,N
+Color=[all],#808080
+IMAGE=[all],[BackgroundFile],25%,65%,50%,35%,0,T,10%
+endif
+if=[Type]="Location"
+Color=[all],[TextBackground],&6600AF
+IMAGE=[all],../Got_Default_Icons/LocationScrapImage.png,0%,55%,120%,50%,0,N
+Color=[all],#808080,&808080
+IMAGE=[all],[BackgroundFile],25%,65%,50%,35%,0,T,10%
+endif
+if=[Type]="Event"
+Color=[all],[TextBackground]
+IMAGE=[all],../Got_Default_Icons/TextPaperImage.png,11%,65.6%,78%,31.4%,0,N
+Color=[all],#808080
+IMAGE=[all],[BackgroundFile],25%,65%,50%,35%,0,T,10%
+endif
+if=[Type]="Attachment"
+Color=[all],[TextBackground]
+IMAGE=[all],../Got_Default_Icons/TextPaperImage.png,10%,54%,80%,40%,0,N
+Color=[all],#808080
+IMAGE=[all],[BackgroundFile],23%,62%,50%,30%,0,T,10%
+endif
+
+;Draw image for attachment
+if=[Type]="Attachment"
+BRUSH=[all],CUSTOM,[imgFile],100%,100%
+ROUNDRECT=[all],-10%,7%,120%,55%,#AAAAAA,#AAAAAA,0,200,3.5,RF
+BRUSH=[all],SOLID
+endif
+if=[Type]="Attachment"
+ROUNDRECT=[all],-10%,6.8%,120%,55%,[NameSmallSideLines],,0.05,200,3.5,RF
+ROUNDRECT=[all],-10%,6.8%,120%,55%,[NameWideLine],empty,0.025,200,3.5,RF
+;name
+
+RECTANGLE=[all],9.9%,92.9%,80%,0.5%,[NameWideLine]
+RECTANGLE=[all],9.9%,92.9%,80%,0.5%,[NameSmallSideLines],Empty,0.005
+
+RECTANGLE=[all],9.9%,97.9%,80%,0.5%,[NameWideLine]
+RECTANGLE=[all],9.9%,97.9%,80%,0.5%,[NameSmallSideLines],Empty,0.005
+
+RECTANGLE=[all],9.9%,93.5%,80%,4.3%,[NameBackground]
+endif
+
+; Set font and add text for the card name
+if=[Type]="Character"
+HTMLTEXT=[all],[NameText],6%,62.8%,100%,10%,#696969,0,T
+ENDIF
+if=[Type]="Location"
+HTMLTEXT=[all],[NameText],8%,15%,10%,43%,#696969,270,T
+ENDIF
+if=[Type]="Event"
+HTMLTEXT=[all],[NameText],13%,5.5%,80%,5%,#696969,0,T
+ENDIF
+if=[Type]="Attachment"
+HTMLTEXT=[all],[NameText],10%,93.5%,80%,5%,#696969,0,T
+ENDIF
+
+;Draw the strenght icon
+if=[Type]="Character"
+IMAGE=[all],../Got_Default_Icons/StrenghtIcon.png,2.2%,56%,20%,15%,0,T
+FONT="@Adobe Kaiti Std R",22,T,#FFFFFF
+TEXT=[all],[Str],1.9%,55.5%,20%,15%,CENTER
+endif
+
+; Set font and add text for the traits
+if=[Type]="Character"
+HTMLTEXT=[all],[TraitsText],3%,68%,100%,5%,#696969,0,T
+endif
+if=[Type]="Location"
+HTMLTEXT=[all],[TraitsText],3%,67%,100%,5%,#696969,0,T
+endif
+if=[Type]="Event"
+HTMLTEXT=[all],[TraitsText],2%,66%,100%,5%,#696969,0,T
+endif
+if=[Type]="Attachment"
+HTMLTEXT=[all],[TraitsText],1%,63%,100%,5%,#696969,0,T
+endif
+
+; Set font and add text for the abilities
+if=[Type]="Character"
+HTMLTEXT=[all],[AbilitiesText],3%,71%,94.17%,10.071%,#696969,0,T
+endif
+if=[Type]="Location"
+HTMLTEXT=[all],[AbilitiesText],14%,70%,94.17%,10.071%,#696969,0,T
+endif
+if=[Type]="Event"
+HTMLTEXT=[all],[AbilitiesText],14%,68%,94.17%,10.071%,#696969,0,T
+endif
+if=[Type]="Attachment"
+HTMLTEXT=[all],[AbilitiesText],14%,66%,94.17%,10.071%,#696969,0,T
+endif
+
+;Draw a banner
+IMAGE=[all],../Got_Default_Icons/Banner.png,1.2%,7%,20%,10%,0,T
+FONT="Copperplate Gothic Bold",7,TF,#000000
+if=[Type]="Character"
+TEXT=[all],Character,2.827%,6.951%,16%,11.071%,CENTER,CENTER
+endif
+if=[Type]="Location"
+TEXT=[all],Location,2.827%,6.951%,16%,11.071%,CENTER,CENTER
+endif
+if=[Type]="Event"
+TEXT=[all],Event,2.827%,6.951%,16%,11.071%,CENTER,CENTER
+endif
+if=[Type]="Attachment"
+TEXT=[all],Attachment,2.827%,6.951%,16%,11.071%,CENTER,CENTER
+endif
+
+; Set font and add text for the description
+If=([Abilities]<>"")_AND_([Type]="Character")
+HTMLTEXT=[all],[DescriptionText],3%,75%,94.17%,23%,#696969,0,T
+elseif=_NOT_([Abilities]<>"")_AND_([Type]="Character")
+HTMLTEXT=[all],[DescriptionText],3%,71%,94.17%,26%,#696969,0,T
+
+elseif=([Abilities]<>"")_AND_([Type]="Location")
+HTMLTEXT=[all],[DescriptionText],14%,74%,85%,24%,#696969,0,T
+elseif=_NOT_([Abilities]<>"")_AND_([Type]="Location")
+HTMLTEXT=[all],[DescriptionText],14%,70%,85%,26%,#696969,0,T
+
+elseif=([Abilities]<>"")_AND_([Type]="Event")
+HTMLTEXT=[all],[DescriptionText],14%,73%,72%,24%,#696969,0,T
+elseif=_NOT_([Abilities]<>"")_AND_([Type]="Event")
+HTMLTEXT=[all],[DescriptionText],14%,69%,72%,26%,#696969,0,T
+
+elseif=([Abilities]<>"")_AND_([Type]="Attachment")
+HTMLTEXT=[all],[DescriptionText],14%,70%,71%,24%,#696969,0,T
+elseif=_NOT_([Abilities]<>"")_AND_([Type]="Attachment")
+HTMLTEXT=[all],[DescriptionText],14%,66%,71%,26%,#696969,0,T
+endif
+
+
+; Add faction and loyal icons
+if=[Type]="Character"
+IMAGE=[all],[Logo],82%,60%,15%,10%,0,N
+endif
+if=[Type]="Location"
+IMAGE=[all],[Logo],3.6%,60%,15%,10%,0,N
+endif
+if=[Type]="Event"
+IMAGE=[all],[Logo],82%,2%,15%,10%,0,N
+endif
+if=[Type]="Attachment"
+IMAGE=[all],[Logo],82%,2%,15%,10%,0,N
+endif
+
+
+If=([Loyal]<>"")_AND_([Type]="Character")
+IMAGE=[all],[LoyalLogo],82%,66%,16%,4%,0,N
+endif
+If=([Loyal]<>"")_AND_([Type]="Location")
+IMAGE=[all],[LoyalLogo],3.6%,66%,16%,4%,0,N
+endif
+If=([Loyal]<>"")_AND_([Type]="Event")
+IMAGE=[all],[LoyalLogo],82%,8%,16%,4%,0,N
+endif
+If=([Loyal]<>"")_AND_([Type]="Attachment")
+IMAGE=[all],[LoyalLogo],82%,8%,16%,4%,0,N
+endif
+
+
+
+
+
+
+
+
+
+
+
+;decorate bottom line
+
+if=[Type]="Character"
+BRUSH=[all],CUSTOM,[StripH],100%,5%
+RECTANGLE=[all],0.3%,97%,100%,1.5%,#000080
+endif
+
+
+BRUSH=[all],SOLID
+RECTANGLE=[all],0.3%,98.5%,100%,3%,[BottomLine]
+;bottom text
+HTMLTEXT=[all],[IllustratorText],3%,98.5%,100%,2%,#D9D9D9,0,T
+HTMLTEXT=[all],[disclaimer],40%,98.5%,100%,2%,#D9D9D9,0,T
+HTMLTEXT=[all],[IdText],96%,98.5%,100%,2%,#D9D9D9,0,T
+IMAGE=[all],[BackgroundFile],98%,98.5%,2%,2%,0,T
+
+
+; Add icons for various attributes
+if=[Type]="Character"
+IF=s@[icons]
+IMAGE=[all],../Got_Default_Icons/SwordIcon.png,3.7%,17%,16.5%,12.2%,0,N
+ENDIF
+
+IF=e@[icons]
+IMAGE=[all],../Got_Default_Icons/EyeIcon.png,3.7%,30.2%,16.5%,12.2%,0,N
+ENDIF
+
+IF=c@[icons]
+IMAGE=[all],../Got_Default_Icons/CrownIcon.png,3.7%,43.5%,16.5%,12.2%,0,N
+ENDIF
+ENDIF
+
